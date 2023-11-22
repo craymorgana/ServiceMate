@@ -1,0 +1,38 @@
+{
+	"users": [
+		{
+			"username": "jdoe",
+			"password": "password123",
+			"email": "jdoe@email.com"
+		},
+		{
+			"username": "jsmith",
+			"password": "password456",
+			"email": "jsmith@email.com"
+		}
+	],
+	"projects": [
+		{
+			"projectTitle": "Project 1",
+			"userId": "user1"
+		},
+		{
+			"projectTitle": "Project 2",
+			"userId": "user2"
+		}
+	],
+	"tasks": [
+		{
+			"project": "Task 1 for project 1",
+			"columnId": 1
+		},
+		{
+			"project": "Task 2 for project 1",
+			"columnId": 1
+		},
+		{
+			"project": "Task 1 for project 2",
+			"columnId": 2
+		}
+	]
+}
