@@ -37,8 +37,8 @@ const Signup = (props) => {
 					<input
 						value={name}
 						onChange={(e) => setName(e.target.value)}
-						type='name'
-						placeholder='your name'
+						type='Username'
+						placeholder='Username'
 						id='name'
 					/>
 					<label htmlFor='email'>Email</label>
@@ -46,7 +46,7 @@ const Signup = (props) => {
 						value={email}
 						onChange={(e) => setEmail(e.target.value)}
 						type='email'
-						placeholder='email.com'
+						placeholder='email@email.com'
 						id='email'
 					/>
 					<label htmlFor='password'>Password</label>

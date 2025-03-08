@@ -8,9 +8,9 @@ const Home = () => {
 	};
 	return (
 		<div id="container" className="container">
-			<h1 className="kanban display-1 m-4 text-center">KanDo</h1>
+			<h1 className="kanban display-1 m-4 text-center">ServiceMate</h1>
 			<h2 id="motto" className="m-5 text-center">
-				Get organized!
+				Track your service
 			</h2>
 		</div>
 	);
