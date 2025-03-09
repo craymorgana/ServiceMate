@@ -25,7 +25,7 @@ const userSchema = new Schema({
   vehicles: [{ type: Schema.Types.ObjectId, ref: "Vehicle" }],
 });
 
-// set up middlware to create password
+// set up middleware to create password
 userSchema.pre("save", async function (next) {
   if (this.isNew || this.isModified("password")) {
     const saltRounds = 10;
