@@ -1,5 +1,5 @@
 const db = require("../config/connection");
-const { User, Project, Task } = require("../models");
+const { User, Service, Vehicle } = require("../models");
 
 // const users = require("./projectSeeds.json");
 // const projects = require("./projectSeeds.json");
@@ -8,8 +8,8 @@ const { User, Project, Task } = require("../models");
 db.once("open", async () => {
 	try {
 		await User.deleteMany({});
-		await Project.deleteMany({});
-		await Task.deleteMany({});
+		await Service.deleteMany({});
+		await Vehicle.deleteMany({});
 
 		//create users
 		// const createdUsers = await User.create(users);
