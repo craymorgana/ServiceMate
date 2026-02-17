@@ -2,45 +2,24 @@
 	"name": "servicemate",
 	"version": "0.1.0",
 	"private": true,
-	"proxy": "http://localhost:3001",
 	"dependencies": {
-		"@apollo/client": "",
-		"@testing-library/jest-dom": "",
-		"@testing-library/react": "",
-		"@testing-library/user-event": "",
-		"bootstrap": "",
-		"graphql": "",
-		"jwt-decode": "",
-		"react": "",
-		"react-bootstrap": "",
-		"react-dom": "",
-		"react-modal": "",
-		"react-router-dom": "",
-		"react-scripts": "",
-		"web-vitals": ""
+		"@apollo/client": "^3.10.4",
+		"bootstrap": "^5.3.3",
+		"graphql": "^16.9.0",
+		"jwt-decode": "^4.0.0",
+		"react": "^18.3.1",
+		"react-bootstrap": "^2.10.5",
+		"react-dom": "^18.3.1",
+		"react-modal": "^3.16.1",
+		"react-router-dom": "^6.26.2"
 	},
 	"scripts": {
-		"start": "react-scripts start",
-		"build": "react-scripts build",
-		"test": "react-scripts test",
-		"eject": "react-scripts eject"
+		"dev": "vite",
+		"build": "vite build",
+		"preview": "vite preview"
 	},
-	"eslintConfig": {
-		"extends": [
-			"react-app",
-			"react-app/jest"
-		]
-	},
-	"browserslist": {
-		"production": [
-			">0.2%",
-			"not dead",
-			"not op_mini all"
-		],
-		"development": [
-			"last 1 chrome version",
-			"last 1 firefox version",
-			"last 1 safari version"
-		]
+	"devDependencies": {
+		"@vitejs/plugin-react": "^4.3.1",
+		"vite": "^5.4.6"
 	}
 }

@@ -1,7 +1,21 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap");
+
+:root {
+	--ink: #0b1418;
+	--mist: #eaf1f1;
+	--sea: #2f3e46;
+	--reef: #7bb29c;
+	--sand: #f2c57c;
+	--storm: #1b2a32;
+	--glass: rgba(255, 255, 255, 0.12);
+	--shadow: 0 30px 80px rgba(10, 20, 24, 0.35);
+}
+
 body {
 	margin: 0;
-	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-		'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+	font-family: "Inter", "Space Grotesk", system-ui, sans-serif;
+	background: #0f1a20;
+	color: var(--mist);
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }

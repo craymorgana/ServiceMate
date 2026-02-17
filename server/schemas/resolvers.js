@@ -51,12 +51,12 @@ const resolvers = {
       if (context.user) {
         const vehicle = await Vehicle.create({
           vehicleTitle: vehicleTitle,
-          userId: context.user.username,
+          userId: context.user._id,
         });
-        console.log(project._id);
+        console.log(vehicle._id);
         await User.findByIdAndUpdate(
           { _id: context.user._id },
-          { $addToSet: { vehicle: project._id } }
+          { $addToSet: { vehicles: vehicle._id } }
         );
         return vehicle;
       }
@@ -65,7 +65,7 @@ const resolvers = {
     //add service to a vehicle
     addService: async (
       parent,
-      { vehicleId, service, serviceDescription, columnId },
+      { vehicleId, serviceType, serviceDescription, mileage, columnId },
       context
     ) => {
       if (!context.user) {
@@ -73,10 +73,15 @@ const resolvers = {
       }
       const addService = await Service.create({
         vehicleId,
-        service,
+        serviceType,
         serviceDescription,
+        mileage,
         columnId,
       });
+      await Vehicle.findByIdAndUpdate(
+        { _id: vehicleId },
+        { $addToSet: { service: addService._id } }
+      );
       return addService;
     },
     login: async (parent, { email, password }) => {

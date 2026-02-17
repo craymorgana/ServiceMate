@@ -4,7 +4,7 @@ const express = require("express");
 const { ApolloServer } = require("apollo-server-express");
 const path = require("path");
 const { authMiddleware } = require("./utils/auth");
-require("dotenv").config();
+require("dotenv").config({ path: path.join(__dirname, "../.env") });
 
 const { typeDefs, resolvers } = require("./schemas");
 const db = require("./config/connection");
@@ -33,13 +33,19 @@ const startApolloServer = async (typeDefs, resolvers) => {
   await server.start();
   server.applyMiddleware({ app });
 
-  db.once("open", () => {
-    app.listen(PORT, () => {
-      console.log(`API server running on port ${PORT}!`);
-      console.log(
-        `Use GraphQL at http://localhost:${PORT}${server.graphqlPath}`
-      );
-    });
+  // Start server without waiting for DB connection (useful when MongoDB is not available)
+  app.listen(PORT, () => {
+    console.log(`API server running on port ${PORT}!`);
+    console.log(
+      `Use GraphQL at http://localhost:${PORT}${server.graphqlPath}`
+    );
+    
+    // Log database connection status
+    if (db.readyState === 1) {
+      console.log('MongoDB connected successfully');
+    } else {
+      console.warn('⚠️  MongoDB not connected - database operations will fail');
+    }
   });
 };
 

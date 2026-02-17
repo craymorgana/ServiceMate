@@ -5,8 +5,7 @@ const typeDefs = gql`
 		_id: ID
 		username: String
 		email: String
-		password: String
-		vehicle: [Vehicle!]!
+		vehicles: [Vehicle!]!
 	}
 
 	type Vehicle {
@@ -20,10 +19,11 @@ const typeDefs = gql`
 
 	type Service {
 		_id: ID!
-		service: String!
-		serviceDescription: String
+		serviceType: String!
+		serviceDescription: String!
+		mileage: Int!
 		columnId: String!
-		vehicleId: ID
+		vehicleId: ID!
 	}
 
 	type Auth {
@@ -33,7 +33,7 @@ const typeDefs = gql`
 
 	type Query {
 		user(username: String!): User
-		vehicles(vehicleId: ID!): [Vehicle!]!
+		vehicles: [Vehicle!]!
 		vehicle(vehicleId: ID!): Vehicle
 		service(vehicleId: ID!): [Service]
 		me: User
@@ -42,9 +42,10 @@ const typeDefs = gql`
 	type Mutation {
 		addVehicle(vehicleTitle: String!): Vehicle
 		addService(
-			service: String!
-			projectId: ID!
+			vehicleId: ID!
+			serviceType: String!
 			serviceDescription: String!
+			mileage: Int!
 			columnId: String!
 		): Service
 		addUser(username: String!, email: String!, password: String!): Auth

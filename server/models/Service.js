@@ -20,7 +20,7 @@ const serviceSchema = new Schema({
     type: String,
     required: true,
   },
-  projectId: {
+  vehicleId: {
     type: Schema.Types.ObjectId,
     ref: "Vehicle",
     required: true,

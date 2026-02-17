@@ -10,6 +10,11 @@ const vehicleSchema = new Schema({
     required: true,
     allowNull: false,
   },
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
   service: [{ type: Schema.Types.ObjectId, ref: "Service" }],
 });
 

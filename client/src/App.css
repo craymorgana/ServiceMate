@@ -2,7 +2,9 @@
 
 .App {
 	min-height: 100vh;
-	background-image: linear-gradient(83deg, #395768, #84a98c 48%, #2f3e46);
+	background-image: radial-gradient(circle at 10% 15%, rgba(123, 178, 156, 0.35), transparent 55%),
+		radial-gradient(circle at 85% 5%, rgba(242, 197, 124, 0.35), transparent 45%),
+		linear-gradient(135deg, #0d151a, #1b2a32 45%, #20313a 100%);
 }
 
 /* Form Styles */
@@ -138,13 +140,194 @@ li {
 	color: rgb(14, 83, 70);
 }
 
-/* KanBan Styles */
+/* Home Styles */
 
-.kanban,
-#motto {
-	color: white;
+.home {
+	width: min(1100px, 92vw);
+	margin: 8rem auto 5rem;
+	padding: 0 0 4rem;
+	color: var(--mist);
 }
 
-#container {
-	align-self: center;
+.home-hero {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	gap: 3rem;
+	align-items: center;
+}
+
+.hero-content {
+	max-width: 520px;
+}
+
+.hero-kicker {
+	text-transform: uppercase;
+	letter-spacing: 0.25em;
+	font-size: 0.7rem;
+	color: var(--sand);
+	margin-bottom: 1rem;
+}
+
+.hero-title {
+	font-family: "Space Grotesk", system-ui, sans-serif;
+	font-size: clamp(2.8rem, 6vw, 4.6rem);
+	margin: 0 0 1rem;
+}
+
+.hero-subtitle {
+	font-size: 1.1rem;
+	line-height: 1.7;
+	color: rgba(234, 241, 241, 0.75);
+}
+
+.hero-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+	margin: 2rem 0 2.5rem;
+}
+
+.btn-hero {
+	padding: 0.9rem 1.6rem;
+	border-radius: 999px;
+	text-decoration: none;
+	font-weight: 600;
+	font-size: 0.95rem;
+	transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.btn-hero.primary {
+	background: var(--sand);
+	color: var(--ink);
+	box-shadow: 0 16px 40px rgba(242, 197, 124, 0.35);
+}
+
+.btn-hero.primary:hover {
+	transform: translateY(-2px);
+}
+
+.btn-hero.ghost {
+	border: 1px solid rgba(255, 255, 255, 0.35);
+	color: var(--mist);
+	background: transparent;
+}
+
+.hero-stats {
+	display: flex;
+	gap: 1.5rem;
+	flex-wrap: wrap;
+}
+
+.stat {
+	display: flex;
+	flex-direction: column;
+	gap: 0.2rem;
+}
+
+.stat-value {
+	font-size: 1.3rem;
+	font-weight: 600;
+}
+
+.stat-label {
+	font-size: 0.8rem;
+	color: rgba(234, 241, 241, 0.65);
+}
+
+.hero-card {
+	background: var(--glass);
+	backdrop-filter: blur(18px);
+	border-radius: 24px;
+	padding: 2rem;
+	box-shadow: var(--shadow);
+	border: 1px solid rgba(255, 255, 255, 0.15);
+	animation: floatIn 0.9s ease forwards;
+}
+
+.card-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-weight: 600;
+	margin-bottom: 1.5rem;
+}
+
+.pill {
+	background: rgba(123, 178, 156, 0.2);
+	color: var(--reef);
+	border-radius: 999px;
+	padding: 0.25rem 0.75rem;
+	font-size: 0.8rem;
+}
+
+.card-list {
+	list-style: none;
+	padding: 0;
+	margin: 0 0 1.5rem;
+}
+
+.card-list li {
+	display: flex;
+	justify-content: space-between;
+	padding: 0.7rem 0;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+	font-size: 0.95rem;
+}
+
+.card-list em {
+	font-style: normal;
+	color: var(--sand);
+}
+
+.card-footer {
+	display: flex;
+	justify-content: space-between;
+	font-size: 0.9rem;
+	color: rgba(234, 241, 241, 0.75);
+}
+
+.home-features {
+	margin-top: 4rem;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	gap: 1.5rem;
+}
+
+.feature {
+	background: rgba(255, 255, 255, 0.04);
+	border-radius: 18px;
+	padding: 1.5rem;
+	border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.feature h3 {
+	font-family: "Space Grotesk", system-ui, sans-serif;
+	margin-bottom: 0.6rem;
+}
+
+.feature p {
+	color: rgba(234, 241, 241, 0.7);
+	line-height: 1.6;
+}
+
+@keyframes floatIn {
+	from {
+		opacity: 0;
+		transform: translateY(24px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@media (max-width: 720px) {
+	.home {
+		margin-top: 6rem;
+	}
+
+	.hero-actions {
+		flex-direction: column;
+		align-items: stretch;
+	}
 }
