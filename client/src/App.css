@@ -131,12 +131,12 @@ li {
 	list-style: square;
 	font-size: 25px;
 }
-.projects {
+.vehicle-link {
 	color: white;
 	text-decoration: none;
 	font-size: 20px;
 }
-.projects:hover {
+.vehicle-link:hover {
 	color: rgb(14, 83, 70);
 }
 
@@ -310,6 +310,497 @@ li {
 	line-height: 1.6;
 }
 
+/* Auth Page Styles */
+
+.auth-page {
+	width: min(1100px, 92vw);
+	margin: 8rem auto 5rem;
+	padding: 0 0 4rem;
+	color: var(--mist);
+}
+
+.auth-hero {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	gap: 3rem;
+	align-items: center;
+}
+
+.auth-copy {
+	max-width: 520px;
+}
+
+.auth-card {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.auth-card h2 {
+	font-family: "Space Grotesk", system-ui, sans-serif;
+	margin: 0;
+	font-size: 1.9rem;
+}
+
+.auth-form-modern {
+	display: flex;
+	flex-direction: column;
+	gap: 0.35rem;
+}
+
+.auth-form-modern label {
+	text-align: left;
+	font-size: 0.9rem;
+	color: rgba(234, 241, 241, 0.85);
+}
+
+.auth-form-modern input {
+	margin: 0.35rem 0 0.9rem;
+	padding: 0.95rem 1rem;
+	border: 1px solid rgba(255, 255, 255, 0.18);
+	background: rgba(13, 21, 26, 0.4);
+	color: var(--mist);
+	border-radius: 12px;
+	outline: none;
+}
+
+.auth-form-modern input::placeholder {
+	color: rgba(234, 241, 241, 0.55);
+}
+
+.auth-form-modern input:focus {
+	border-color: rgba(242, 197, 124, 0.8);
+	box-shadow: 0 0 0 3px rgba(242, 197, 124, 0.18);
+}
+
+.auth-submit {
+	border: none;
+	cursor: pointer;
+	width: 100%;
+	text-align: center;
+	margin-top: 0.25rem;
+}
+
+.auth-switch {
+	text-decoration: none;
+	color: var(--mist);
+	font-size: 0.9rem;
+	opacity: 0.9;
+}
+
+.auth-switch:hover {
+	opacity: 1;
+	color: var(--sand);
+}
+
+.auth-error {
+	margin: 0;
+	color: #ff8f8f;
+	font-size: 0.9rem;
+}
+
+.auth-success {
+	margin: 0;
+	color: var(--sand);
+}
+
+/* Dashboard + Board Styles */
+
+.dashboard-page,
+.board-page {
+	width: min(1100px, 92vw);
+	margin: 8rem auto 5rem;
+	padding: 0 0 4rem;
+	color: var(--mist);
+}
+
+.dashboard-hero,
+.board-hero {
+	display: grid;
+	gap: 2rem;
+}
+
+.dashboard-copy,
+.board-copy {
+	max-width: 640px;
+}
+
+.dashboard-card {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.dashboard-card h2 {
+	font-family: "Space Grotesk", system-ui, sans-serif;
+	font-size: 1.6rem;
+	margin: 0;
+}
+
+.dashboard-list-wrap,
+.board-task-list {
+	max-height: 280px;
+	overflow: auto;
+	padding-right: 0.25rem;
+	scrollbar-width: thin;
+	scrollbar-color: rgba(242, 197, 124, 0.55) rgba(255, 255, 255, 0.08);
+}
+
+.dashboard-list-wrap::-webkit-scrollbar,
+.board-task-list::-webkit-scrollbar {
+	width: 10px;
+}
+
+.dashboard-list-wrap::-webkit-scrollbar-track,
+.board-task-list::-webkit-scrollbar-track {
+	background: rgba(255, 255, 255, 0.08);
+	border-radius: 999px;
+}
+
+.dashboard-list-wrap::-webkit-scrollbar-thumb,
+.board-task-list::-webkit-scrollbar-thumb {
+	background: linear-gradient(
+		180deg,
+		rgba(242, 197, 124, 0.85) 0%,
+		rgba(123, 178, 156, 0.8) 100%
+	);
+	border-radius: 999px;
+	border: 2px solid rgba(19, 32, 40, 0.9);
+}
+
+.dashboard-list-wrap::-webkit-scrollbar-thumb:hover,
+.board-task-list::-webkit-scrollbar-thumb:hover {
+	background: linear-gradient(
+		180deg,
+		rgba(242, 197, 124, 1) 0%,
+		rgba(123, 178, 156, 0.95) 100%
+	);
+}
+
+.dashboard-list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 0.65rem;
+}
+
+.dashboard-list li {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 1rem;
+	list-style: none;
+	font-size: 1rem;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+	padding-bottom: 0.6rem;
+	color: var(--mist);
+}
+
+.dashboard-list-main {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+}
+
+.car-actions {
+	display: flex;
+	gap: 0.4rem;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+.car-btn {
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	background: rgba(255, 255, 255, 0.06);
+	color: var(--mist);
+	border-radius: 999px;
+	padding: 0.35rem 0.8rem;
+	font-size: 0.75rem;
+	cursor: pointer;
+}
+
+.car-btn:disabled {
+	opacity: 0.6;
+	cursor: not-allowed;
+}
+
+.car-btn-remove {
+	border-color: rgba(255, 143, 143, 0.45);
+	color: #ffb3b3;
+}
+
+.car-btn-confirm {
+	background: rgba(255, 143, 143, 0.18);
+	border-color: rgba(255, 143, 143, 0.55);
+	color: #ffd7d7;
+}
+
+.car-btn-cancel {
+	border-color: rgba(242, 197, 124, 0.5);
+	color: var(--sand);
+}
+
+.car-link-note {
+	font-size: 0.78rem;
+	color: rgba(234, 241, 241, 0.7);
+}
+
+.dashboard-empty {
+	margin: 0;
+	color: rgba(234, 241, 241, 0.75);
+	font-size: 0.95rem;
+}
+
+.dashboard-form {
+	display: flex;
+	flex-direction: column;
+	gap: 0.45rem;
+	margin-top: 0.8rem;
+}
+
+.dashboard-form label {
+	font-size: 0.9rem;
+	color: rgba(234, 241, 241, 0.85);
+}
+
+.dashboard-form input {
+	padding: 0.95rem 1rem;
+	border: 1px solid rgba(255, 255, 255, 0.18);
+	background: rgba(13, 21, 26, 0.4);
+	color: var(--mist);
+	border-radius: 12px;
+	outline: none;
+	margin: 0 0 0.4rem;
+}
+
+.dashboard-form select {
+	padding: 0.95rem 1rem;
+	border: 1px solid rgba(255, 255, 255, 0.18);
+	background: rgba(13, 21, 26, 0.4);
+	color: var(--mist);
+	border-radius: 12px;
+	outline: none;
+	margin: 0 0 0.4rem;
+}
+
+.dashboard-form select:disabled {
+	opacity: 0.7;
+	cursor: not-allowed;
+}
+
+.dashboard-form-error {
+	margin: 0;
+	font-size: 0.88rem;
+	color: #ff9e9e;
+}
+
+.mileage-success {
+	margin: 0;
+	font-size: 0.88rem;
+	color: rgba(123, 178, 156, 0.95);
+}
+
+.board-columns {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+	gap: 1.2rem;
+}
+
+.board-header-grid {
+	display: grid;
+	grid-template-columns: 1.15fr 1fr;
+	gap: 1.2rem;
+	align-items: start;
+	max-width: none;
+}
+
+.vehicle-details-card {
+	display: grid;
+	grid-template-columns: minmax(180px, 230px) 1fr;
+	gap: 1rem;
+	align-items: center;
+}
+
+.vehicle-preview-image {
+	width: 100%;
+	max-width: 230px;
+	height: auto;
+	border-radius: 14px;
+	border: 1px solid rgba(255, 255, 255, 0.14);
+	background: rgba(255, 255, 255, 0.03);
+}
+
+.vehicle-details-content h3 {
+	margin: 0;
+	font-family: "Space Grotesk", system-ui, sans-serif;
+	font-size: 1.2rem;
+}
+
+.vehicle-details-content p {
+	margin: 0.35rem 0 0.7rem;
+	font-size: 0.92rem;
+	color: rgba(234, 241, 241, 0.8);
+}
+
+.vehicle-mileage-form {
+	display: flex;
+	flex-direction: column;
+	gap: 0.45rem;
+}
+
+.vehicle-mileage-form label {
+	font-size: 0.86rem;
+	color: rgba(234, 241, 241, 0.82);
+}
+
+.vehicle-mileage-form input {
+	padding: 0.75rem 0.9rem;
+	border: 1px solid rgba(255, 255, 255, 0.18);
+	background: rgba(13, 21, 26, 0.4);
+	color: var(--mist);
+	border-radius: 10px;
+	outline: none;
+}
+
+.mileage-save-btn {
+	width: fit-content;
+	padding: 0.5rem 0.85rem;
+	cursor: pointer;
+}
+
+.board-column {
+	display: flex;
+	flex-direction: column;
+	gap: 0.9rem;
+	min-height: 360px;
+}
+
+.board-column-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 0.8rem;
+}
+
+.board-column-header h3 {
+	margin: 0;
+	font-family: "Space Grotesk", system-ui, sans-serif;
+	font-size: 1.1rem;
+}
+
+.board-add-btn,
+.board-close-btn {
+	border: none;
+	cursor: pointer;
+	font-size: 0.85rem;
+	padding: 0.55rem 0.9rem;
+}
+
+.board-task-list {
+	background: rgba(255, 255, 255, 0.04);
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	border-radius: 14px;
+	padding: 0.6rem;
+	min-height: 250px;
+	max-height: 420px;
+	overflow: auto;
+}
+
+.task {
+	background: rgba(255, 255, 255, 0.06);
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	border-radius: 12px;
+	padding: 0.8rem;
+	margin-bottom: 0.6rem;
+}
+
+.task .card-title {
+	font-weight: 600;
+	font-size: 0.95rem;
+	margin-bottom: 0.3rem;
+}
+
+.task p {
+	font-size: 0.88rem;
+	line-height: 1.45;
+	color: rgba(234, 241, 241, 0.78);
+	margin-bottom: 0.7rem;
+}
+
+.task .buttons {
+	display: flex;
+	gap: 0.45rem;
+	flex-wrap: wrap;
+}
+
+.task-mileage {
+	font-size: 0.8rem;
+	margin-top: -0.2rem;
+	margin-bottom: 0.6rem;
+	color: rgba(234, 241, 241, 0.72);
+}
+
+.task-empty {
+	margin: 0;
+	font-size: 0.88rem;
+	color: rgba(234, 241, 241, 0.65);
+	padding: 0.4rem;
+}
+
+.service-modal-overlay {
+	position: fixed;
+	inset: 0;
+	background: rgba(8, 14, 18, 0.75);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 1rem;
+	z-index: 999;
+}
+
+.service-modal {
+	width: min(720px, 95vw);
+	background: #132028;
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	border-radius: 18px;
+	padding: 1.2rem;
+	outline: none;
+	color: var(--mist);
+	max-height: 85vh;
+	overflow: auto;
+	scrollbar-width: thin;
+	scrollbar-color: rgba(242, 197, 124, 0.55) rgba(255, 255, 255, 0.08);
+}
+
+.service-modal::-webkit-scrollbar {
+	width: 10px;
+}
+
+.service-modal::-webkit-scrollbar-track {
+	background: rgba(255, 255, 255, 0.08);
+	border-radius: 999px;
+}
+
+.service-modal::-webkit-scrollbar-thumb {
+	background: linear-gradient(
+		180deg,
+		rgba(242, 197, 124, 0.85) 0%,
+		rgba(123, 178, 156, 0.8) 100%
+	);
+	border-radius: 999px;
+	border: 2px solid rgba(19, 32, 40, 0.9);
+}
+
+.service-modal::-webkit-scrollbar-thumb:hover {
+	background: linear-gradient(
+		180deg,
+		rgba(242, 197, 124, 1) 0%,
+		rgba(123, 178, 156, 0.95) 100%
+	);
+}
+
 @keyframes floatIn {
 	from {
 		opacity: 0;
@@ -329,5 +820,26 @@ li {
 	.hero-actions {
 		flex-direction: column;
 		align-items: stretch;
+	}
+
+	.auth-page {
+		margin-top: 6rem;
+	}
+
+	.dashboard-page,
+	.board-page {
+		margin-top: 6rem;
+	}
+
+	.board-header-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.vehicle-details-card {
+		grid-template-columns: 1fr;
+	}
+
+	.vehicle-preview-image {
+		max-width: none;
 	}
 }

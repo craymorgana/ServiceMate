@@ -15,6 +15,11 @@ const vehicleSchema = new Schema({
     ref: "User",
     required: true,
   },
+  mileage: {
+    type: Number,
+    min: 0,
+    default: 0,
+  },
   service: [{ type: Schema.Types.ObjectId, ref: "Service" }],
 });
 

@@ -62,6 +62,57 @@ const resolvers = {
       }
       throw new AuthenticationError("Not logged in");
     },
+    removeVehicle: async (_parent, { vehicleId }, context) => {
+      if (!context.user) {
+        throw new AuthenticationError("Not logged in");
+      }
+
+      const vehicle = await Vehicle.findOne({
+        _id: vehicleId,
+        userId: context.user._id,
+      });
+
+      if (!vehicle) {
+        throw new UserInputError("Vehicle not found for this user");
+      }
+
+      await Service.deleteMany({ vehicleId: vehicle._id });
+
+      await User.findByIdAndUpdate(
+        { _id: context.user._id },
+        { $pull: { vehicles: vehicle._id } }
+      );
+
+      await Vehicle.findByIdAndDelete(vehicle._id);
+
+      return vehicle;
+    },
+    updateVehicleMileage: async (_parent, { vehicleId, mileage }, context) => {
+      if (!context.user) {
+        throw new AuthenticationError("Not logged in");
+      }
+
+      if (mileage < 0) {
+        throw new UserInputError("Mileage must be a non-negative value");
+      }
+
+      const vehicle = await Vehicle.findOneAndUpdate(
+        {
+          _id: vehicleId,
+          userId: context.user._id,
+        },
+        {
+          $set: { mileage },
+        },
+        { new: true }
+      );
+
+      if (!vehicle) {
+        throw new UserInputError("Vehicle not found for this user");
+      }
+
+      return vehicle;
+    },
     //add service to a vehicle
     addService: async (
       parent,

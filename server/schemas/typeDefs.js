@@ -12,6 +12,7 @@ const typeDefs = gql`
 		_id: ID
 		vehicleTitle: String
 		userId: ID
+		mileage: Int
 		user: User
 		service: [Service]
 		title: String
@@ -41,6 +42,8 @@ const typeDefs = gql`
 
 	type Mutation {
 		addVehicle(vehicleTitle: String!): Vehicle
+		removeVehicle(vehicleId: ID!): Vehicle
+		updateVehicleMileage(vehicleId: ID!, mileage: Int!): Vehicle
 		addService(
 			vehicleId: ID!
 			serviceType: String!

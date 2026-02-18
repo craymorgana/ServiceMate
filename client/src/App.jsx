@@ -12,8 +12,9 @@ import {
 	ApolloProvider,
 	createHttpLink,
 } from "@apollo/client";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Navigate, Route, Routes } from "react-router-dom";
 import { setContext } from "@apollo/client/link/context";
+import Auth from "./utils/auth";
 
 const httpLink = createHttpLink({
 	uri: "/graphql",
@@ -44,13 +45,19 @@ function App() {
 				<div className="App d-flex justify-content-center">
 					<Header />
 					<Routes>
-						<Route path="/" element={<Home />} />
+						<Route
+							path="/"
+							element={Auth.loggedIn() ? <Navigate to="/dashboard" replace /> : <Home />}
+						/>
 						<Route path="/login" element={<Login />} />
 						<Route path="/logout" element={<Home />} />
 						<Route path="/signup" element={<Signup />} />
 						<Route path="/dashboard" element={<Dashboard />} />
-						<Route path="/projects/:projectId" element={<Board />} />
-						<Route path="*" element={<Home />} />
+						<Route path="/vehicles/:vehicleId" element={<Board />} />
+						<Route
+							path="*"
+							element={Auth.loggedIn() ? <Navigate to="/dashboard" replace /> : <Home />}
+						/>
 					</Routes>
 				</div>
 			</Router>

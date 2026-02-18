@@ -17,11 +17,11 @@ const Header = () => {
       <div className="d-flex justify-content-around ">
         {Auth.loggedIn() ? (
           <>
-            <Link className="header-link" to="/">
+            <Link className="header-link" to="/dashboard">
               Home
             </Link>
             <Link className="header-link" to="/dashboard">
-              {Auth.getProfile().data.username}'s Profile
+              {Auth.getProfile().data.username}'s Dashboard
             </Link>
             <Link className="header-link" onClick={logout} to="/logout">
               Logout

@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import { useMutation } from "@apollo/client";
-import { ADD_TASK } from "../../utils/mutations";
+import { ADD_SERVICE } from "../../utils/mutations";
 import { useParams } from "react-router-dom";
 
 const AddTask = (props) => {
-	const { closeModal } = props;
+	const { closeModal, vehicleId: propVehicleId } = props;
 	const [task, setTask] = useState("");
 	const [taskDescription, setDescription] = useState("");
+	const [mileage, setMileage] = useState("");
 	const [columnId, setColumnId] = useState("");
-	const { projectId } = useParams();
+	const { vehicleId: routeVehicleId } = useParams();
+	const vehicleId = propVehicleId || routeVehicleId;
 
-	const [addTask, { error }] = useMutation(ADD_TASK, {});
+	const [addService, { error }] = useMutation(ADD_SERVICE, {});
 
 	const handleInputChange = (event) => {
 		const { name, value } = event.target;
@@ -19,6 +21,8 @@ const AddTask = (props) => {
 			setTask(value);
 		} else if (name === "taskDescription") {
 			setDescription(value);
+		} else if (name === "mileage") {
+			setMileage(value);
 		} else if (name === "columnId") {
 			setColumnId(value);
 		}
@@ -27,8 +31,14 @@ const AddTask = (props) => {
 	const handleFormSubmit = async (event) => {
 		event.preventDefault();
 		try {
-			const { data } = await addTask({
-				variables: { projectId, task, taskDescription, columnId },
+			await addService({
+				variables: {
+					vehicleId,
+					serviceType: task,
+					serviceDescription: taskDescription,
+					mileage: Number(mileage),
+					columnId,
+				},
 			});
 			closeModal();
 			window.location.reload();
@@ -40,37 +50,49 @@ const AddTask = (props) => {
 	return (
 		<div className="d-flex justify-content-center">
 			<div className="task-form">
-				<h3>Add Task</h3>
+				<h3>Add Service</h3>
 				<form onSubmit={handleFormSubmit}>
 					<div className="form-group">
-						<label htmlFor="task">Title:</label>
+						<label htmlFor="task">Service title:</label>
 						<input
 							type="text"
 							className="form-control"
 							id="task"
 							name="task"
-							placeholder="Enter task title"
+							placeholder="Enter service title"
 							value={task}
 							onChange={handleInputChange}
 						/>
 					</div>
 					<div className="form-group">
-						<label htmlFor="taskDescription">
-							Enter your Task description:
-						</label>
+						<label htmlFor="taskDescription">Service details:</label>
 						<input
 							type="text"
 							className="form-control"
 							id="taskDescription"
 							name="taskDescription"
-							placeholder="Enter task description"
+							placeholder="Enter service description"
 							value={taskDescription}
 							onChange={handleInputChange}
 						/>
 					</div>
 					<div className="form-group">
+						<label htmlFor="mileage">Mileage:</label>
+						<input
+							type="number"
+							className="form-control"
+							id="mileage"
+							name="mileage"
+							placeholder="Enter current mileage"
+							value={mileage}
+							onChange={handleInputChange}
+							min="0"
+							required
+						/>
+					</div>
+					<div className="form-group">
 						<label htmlFor="columnId">
-							Select which column to add the task to:
+							Select a board column:
 						</label>
 						<select
 							className="form-control"

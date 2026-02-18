@@ -6,48 +6,34 @@ export const QUERY_USER = gql`
 			_id
 			username
 			email
-			projects {
+			vehicles {
 				_id
-				projectTitle
-			}
-		}
-	}
-`;
-export const QUERY_PROJECTS = gql`
-	query projects($projectId: ID!) {
-		projects(projectId: $projectId) {
-			_id
-			projectTitle
-			tasks {
-				_id
-				title
-				projectId
+				vehicleTitle
 			}
 		}
 	}
 `;
 
-export const QUERY_PROJECT = gql`
-	query project($projectId: ID!) {
-		project(projectId: $projectId) {
+export const QUERY_VEHICLE = gql`
+	query vehicle($vehicleId: ID!) {
+		vehicle(vehicleId: $vehicleId) {
 			_id
-			projectTitle
-			tasks {
-				task
-				taskDescription
-				columnId
-			}
+			vehicleTitle
+			userId
+			mileage
 		}
 	}
 `;
 
-export const QUERY_TASKS = gql`
-	query tasks($projectId: ID!) {
-		tasks(projectId: $projectId) {
-			task
-			taskDescription
+export const QUERY_SERVICE = gql`
+	query service($vehicleId: ID!) {
+		service(vehicleId: $vehicleId) {
+			_id
+			serviceType
+			serviceDescription
+			mileage
 			columnId
-			projectId
+			vehicleId
 		}
 	}
 `;
@@ -58,9 +44,9 @@ export const QUERY_ME = gql`
 			_id
 			username
 			email
-			projects {
+			vehicles {
 				_id
-				projectTitle
+				vehicleTitle
 			}
 		}
 	}

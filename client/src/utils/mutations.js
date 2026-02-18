@@ -24,32 +24,56 @@ export const ADD_USER = gql`
 	}
 `;
 
-export const ADD_PROJECT = gql`
-	mutation addProject($projectTitle: String!) {
-		addProject(projectTitle: $projectTitle) {
+export const ADD_VEHICLE = gql`
+	mutation addVehicle($vehicleTitle: String!) {
+		addVehicle(vehicleTitle: $vehicleTitle) {
 			_id
-			projectTitle
+			vehicleTitle
 			userId
 		}
 	}
 `;
 
-export const ADD_TASK = gql`
-	mutation addTask(
-		$projectId: ID!
-		$task: String!
-		$taskDescription: String!
+export const REMOVE_VEHICLE = gql`
+	mutation removeVehicle($vehicleId: ID!) {
+		removeVehicle(vehicleId: $vehicleId) {
+			_id
+			vehicleTitle
+		}
+	}
+`;
+
+export const UPDATE_VEHICLE_MILEAGE = gql`
+	mutation updateVehicleMileage($vehicleId: ID!, $mileage: Int!) {
+		updateVehicleMileage(vehicleId: $vehicleId, mileage: $mileage) {
+			_id
+			vehicleTitle
+			mileage
+		}
+	}
+`;
+
+export const ADD_SERVICE = gql`
+	mutation addService(
+		$vehicleId: ID!
+		$serviceType: String!
+		$serviceDescription: String!
+		$mileage: Int!
 		$columnId: String!
 	) {
-		addTask(
-			projectId: $projectId
-			task: $task
-			taskDescription: $taskDescription
+		addService(
+			vehicleId: $vehicleId
+			serviceType: $serviceType
+			serviceDescription: $serviceDescription
+			mileage: $mileage
 			columnId: $columnId
 		) {
-			task
-			taskDescription
+			_id
+			serviceType
+			serviceDescription
+			mileage
 			columnId
+			vehicleId
 		}
 	}
 `;

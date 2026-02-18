@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" role="img" aria-label="Cartoon vehicle">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1b2a32"/>
+      <stop offset="100%" stop-color="#132028"/>
+    </linearGradient>
+    <linearGradient id="car" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#7bb29c"/>
+      <stop offset="100%" stop-color="#5f8f7b"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="400" fill="url(#bg)"/>
+  <ellipse cx="400" cy="334" rx="300" ry="20" fill="#0c151a" opacity="0.45"/>
+  <g transform="translate(116,116)">
+    <rect x="80" y="105" rx="26" ry="26" width="450" height="95" fill="url(#car)"/>
+    <path d="M140 105 L230 58 H390 L500 105 Z" fill="#689f88"/>
+    <rect x="242" y="69" width="135" height="34" rx="8" fill="#c8e7f0" opacity="0.85"/>
+    <circle cx="180" cy="210" r="40" fill="#111b20"/>
+    <circle cx="180" cy="210" r="17" fill="#95acb1"/>
+    <circle cx="440" cy="210" r="40" fill="#111b20"/>
+    <circle cx="440" cy="210" r="17" fill="#95acb1"/>
+  </g>
+</svg>

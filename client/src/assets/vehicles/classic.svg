@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" role="img" aria-label="Cartoon classic car">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1b2a32"/>
+      <stop offset="100%" stop-color="#132028"/>
+    </linearGradient>
+    <linearGradient id="car" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#d36f7c"/>
+      <stop offset="100%" stop-color="#b45b68"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="400" fill="url(#bg)"/>
+  <ellipse cx="400" cy="336" rx="290" ry="18" fill="#0c151a" opacity="0.45"/>
+  <g transform="translate(128,124)">
+    <path d="M82 170 C90 110, 142 80, 210 80 H360 C420 80, 468 118, 484 170 Z" fill="url(#car)"/>
+    <rect x="86" y="158" rx="24" ry="24" width="404" height="55" fill="#c66270"/>
+    <rect x="228" y="96" width="102" height="38" rx="14" fill="#c8e7f0" opacity="0.85"/>
+    <circle cx="156" cy="220" r="38" fill="#111b20"/>
+    <circle cx="156" cy="220" r="16" fill="#95acb1"/>
+    <circle cx="420" cy="220" r="38" fill="#111b20"/>
+    <circle cx="420" cy="220" r="16" fill="#95acb1"/>
+    <circle cx="92" cy="180" r="8" fill="#f7deb4"/>
+    <circle cx="485" cy="180" r="8" fill="#f7deb4"/>
+  </g>
+</svg>
