@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            server/package-lock.json
+            client/package-lock.json
+      - name: Install server
+        working-directory: server
+        run: npm ci
+      - name: Install client
+        working-directory: client
+        run: npm ci
+      - name: Server tests
+        working-directory: server
+        run: npm test
+      - name: Client tests
+        working-directory: client
+        run: npm test
+      - name: Server audit
+        working-directory: server
+        run: npm audit --audit-level=high
+      - name: Client audit
+        working-directory: client
+        run: npm audit --audit-level=high

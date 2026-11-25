@@ -1,210 +1,39 @@
-/** @format */
-
-import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { useMutation, useQuery } from "@apollo/client";
-import { ADD_VEHICLE, REMOVE_VEHICLE } from "../utils/mutations";
-import { QUERY_USER, QUERY_ME } from "../utils/queries";
-
-import Auth from "../utils/auth";
+import { Link } from "react-router-dom";
+import { useGarage } from "../hooks/useGarage";
 
 const Dashboard = () => {
-	const [selectedYear, setSelectedYear] = useState("");
-	const [selectedMake, setSelectedMake] = useState("");
-	const [selectedModel, setSelectedModel] = useState("");
-	const [makes, setMakes] = useState([]);
-	const [models, setModels] = useState([]);
-	const [loadingMakes, setLoadingMakes] = useState(false);
-	const [loadingModels, setLoadingModels] = useState(false);
-	const [vehicleError, setVehicleError] = useState("");
-	const [removeError, setRemoveError] = useState("");
-	const [pendingRemoveId, setPendingRemoveId] = useState("");
-	const [removingVehicleId, setRemovingVehicleId] = useState("");
-	const { username: userParam } = useParams();
-	const currentYear = new Date().getFullYear();
-	const earliestYear = 1940;
-	const yearOptions = Array.from({ length: currentYear - earliestYear + 1 }, (_, index) =>
-		String(currentYear - index)
-	);
-
-	const [addVehicle] = useMutation(ADD_VEHICLE, {
-		refetchQueries: [{ query: QUERY_ME }],
-	});
-	const [removeVehicle] = useMutation(REMOVE_VEHICLE, {
-		refetchQueries: [{ query: QUERY_ME }],
-	});
-
-	const uniqueSortedValues = (values) =>
-		Array.from(
-			new Set(
-				values
-					.map((value) => (typeof value === "string" ? value.trim() : value))
-					.filter(Boolean)
-			)
-		).sort((first, second) => first.localeCompare(second));
-
-	const queryDocument = userParam ? QUERY_USER : QUERY_ME;
-	const queryOptions = userParam ? { variables: { username: userParam } } : {};
-	const { loading, data } = useQuery(queryDocument, queryOptions);
-	const user = data?.me || data?.user || {};
-	const vehicles = user.vehicles || [];
-
-	useEffect(() => {
-		const fetchMakes = async () => {
-			if (!selectedYear) {
-				setMakes([]);
-				setSelectedMake("");
-				setSelectedModel("");
-				setModels([]);
-				return;
-			}
-
-			setVehicleError("");
-			setLoadingMakes(true);
-			setSelectedMake("");
-			setSelectedModel("");
-			setModels([]);
-
-			try {
-				const response = await fetch(
-					"https://vpic.nhtsa.dot.gov/api/vehicles/GetMakesForVehicleType/car?format=json"
-				);
-
-				if (!response.ok) {
-					throw new Error("Unable to load makes");
-				}
-
-				const result = await response.json();
-				const makeNames = uniqueSortedValues(
-					(result?.Results || [])
-					.map((item) => item.MakeName)
-				);
-
-				setMakes(makeNames);
-			} catch (error) {
-				console.error(error);
-				setVehicleError("Could not load vehicle makes. Try again.");
-			} finally {
-				setLoadingMakes(false);
-			}
-		};
-
-		fetchMakes();
-	}, [selectedYear]);
-
-	useEffect(() => {
-		const fetchModels = async () => {
-			if (!selectedYear || !selectedMake) {
-				setModels([]);
-				setSelectedModel("");
-				return;
-			}
-
-			setVehicleError("");
-			setLoadingModels(true);
-			setSelectedModel("");
-
-			try {
-				const response = await fetch(
-					`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeYear/make/${encodeURIComponent(selectedMake)}/modelyear/${selectedYear}?format=json`
-				);
-
-				if (!response.ok) {
-					throw new Error("Unable to load models");
-				}
-
-				const result = await response.json();
-				const modelNames = uniqueSortedValues(
-					(result?.Results || [])
-					.map((item) => item.Model_Name)
-				);
-
-				setModels(modelNames);
-			} catch (error) {
-				console.error(error);
-				setVehicleError("Could not load models for that make and year.");
-			} finally {
-				setLoadingModels(false);
-			}
-		};
-
-		fetchModels();
-	}, [selectedYear, selectedMake]);
+	const {
+		selectedYear,
+		selectedMake,
+		selectedModel,
+		setSelectedModel,
+		yearOptions,
+		chooseYear,
+		chooseMake,
+		vehicles,
+		loading,
+		queryError,
+		vehicleError,
+		removeError,
+		pendingRemoveId,
+		removingVehicleId,
+		setPendingRemoveId,
+		setRemoveError,
+		handleAddVehicle,
+		handleConfirmRemove,
+		makes,
+		models,
+		loadingMakes,
+		loadingModels,
+	} = useGarage();
 
 	if (loading) {
-		return <div>Loading...</div>;
+		return <div role="status">Loading...</div>;
 	}
 
-	if (!Auth.loggedIn()) {
-		return (
-			<div className="auth-page">
-				<section className="auth-hero">
-					<div className="hero-card auth-card">
-						<h2>Login required</h2>
-						<p className="hero-subtitle">
-							You need to be logged in to view your dashboard.
-						</p>
-					</div>
-				</section>
-			</div>
-		);
+	if (queryError) {
+		return <p role="alert">Error: {queryError.message}</p>;
 	}
-
-	const handleAddVehicle = async (event) => {
-		event.preventDefault();
-		if (!selectedYear || !selectedMake || !selectedModel) {
-			setVehicleError("Select year, make, and model before saving.");
-			return;
-		}
-
-		try {
-			const vehicleTitle = `${selectedYear} ${selectedMake} ${selectedModel}`;
-			await addVehicle({
-				variables: {
-					vehicleTitle,
-				},
-			});
-			setSelectedYear("");
-			setSelectedMake("");
-			setSelectedModel("");
-			setMakes([]);
-			setModels([]);
-			setVehicleError("");
-			setRemoveError("");
-		} catch (err) {
-			console.error(err);
-			setVehicleError("Unable to save this car right now.");
-		}
-	};
-
-	const handleStartRemove = (vehicleId) => {
-		setPendingRemoveId(vehicleId);
-		setRemoveError("");
-	};
-
-	const handleCancelRemove = () => {
-		setPendingRemoveId("");
-		setRemoveError("");
-	};
-
-	const handleConfirmRemove = async (vehicleId) => {
-		setRemovingVehicleId(vehicleId);
-		setRemoveError("");
-
-		try {
-			await removeVehicle({
-				variables: {
-					vehicleId,
-				},
-			});
-			setPendingRemoveId("");
-		} catch (error) {
-			console.error(error);
-			setRemoveError("Unable to remove this car right now.");
-		} finally {
-			setRemovingVehicleId("");
-		}
-	};
 
 	return (
 		<div className="dashboard-page">
@@ -213,8 +42,7 @@ const Dashboard = () => {
 					<p className="hero-kicker">Your garage</p>
 					<h1 className="hero-title">Dashboard</h1>
 					<p className="hero-subtitle">
-						Manage your cars and open each car&apos;s service board to track
-						maintenance work.
+						Manage your cars and open each car&apos;s service board to track maintenance work.
 					</p>
 				</div>
 
@@ -222,15 +50,12 @@ const Dashboard = () => {
 					<h2>My Cars</h2>
 					<div className="dashboard-list-wrap">
 						{!vehicles.length ? (
-							<p className="dashboard-empty">
-								Add your first car to start tracking service.
-							</p>
+							<p className="dashboard-empty">Add your first car to start tracking service.</p>
 						) : (
 							<ul className="dashboard-list">
 								{vehicles.map((vehicle) => {
 									const isPendingRemove = pendingRemoveId === vehicle._id;
 									const isRemoving = removingVehicleId === vehicle._id;
-
 									return (
 										<li key={vehicle._id}>
 											<div className="dashboard-list-main">
@@ -253,7 +78,10 @@ const Dashboard = () => {
 														<button
 															type="button"
 															className="car-btn car-btn-cancel"
-															onClick={handleCancelRemove}
+															onClick={() => {
+																setPendingRemoveId("");
+																setRemoveError("");
+															}}
 															disabled={isRemoving}
 														>
 															Cancel
@@ -263,7 +91,10 @@ const Dashboard = () => {
 													<button
 														type="button"
 														className="car-btn car-btn-remove"
-														onClick={() => handleStartRemove(vehicle._id)}
+														onClick={() => {
+															setPendingRemoveId(vehicle._id);
+															setRemoveError("");
+														}}
 													>
 														Remove Car
 													</button>
@@ -274,17 +105,16 @@ const Dashboard = () => {
 								})}
 							</ul>
 						)}
-
-						{removeError && <p className="dashboard-form-error">{removeError}</p>}
+						{removeError && (
+							<p className="dashboard-form-error" role="alert">
+								{removeError}
+							</p>
+						)}
 					</div>
 
 					<form className="dashboard-form" onSubmit={handleAddVehicle}>
 						<label htmlFor="carYear">Year</label>
-						<select
-							id="carYear"
-							value={selectedYear}
-							onChange={(event) => setSelectedYear(event.target.value)}
-						>
+						<select id="carYear" value={selectedYear} onChange={(event) => chooseYear(event.target.value)}>
 							<option value="">Select year</option>
 							{yearOptions.map((year) => (
 								<option key={year} value={year}>
@@ -299,12 +129,10 @@ const Dashboard = () => {
 								<select
 									id="carMake"
 									value={selectedMake}
-									onChange={(event) => setSelectedMake(event.target.value)}
+									onChange={(event) => chooseMake(event.target.value)}
 									disabled={loadingMakes || !makes.length}
 								>
-									<option value="">
-										{loadingMakes ? "Loading makes..." : "Select make"}
-									</option>
+									<option value="">{loadingMakes ? "Loading makes..." : "Select make"}</option>
 									{makes.map((make) => (
 										<option key={make} value={make}>
 											{make}
@@ -323,9 +151,7 @@ const Dashboard = () => {
 									onChange={(event) => setSelectedModel(event.target.value)}
 									disabled={loadingModels || !models.length}
 								>
-									<option value="">
-										{loadingModels ? "Loading models..." : "Select model"}
-									</option>
+									<option value="">{loadingModels ? "Loading models..." : "Select model"}</option>
 									{models.map((model) => (
 										<option key={model} value={model}>
 											{model}
@@ -333,14 +159,16 @@ const Dashboard = () => {
 									))}
 								</select>
 								{!loadingModels && !models.length && (
-									<p className="dashboard-form-error">
-										No models were found for that year and make.
-									</p>
+									<p className="dashboard-form-error">No models were found for that year and make.</p>
 								)}
 							</>
 						)}
 
-						{vehicleError && <p className="dashboard-form-error">{vehicleError}</p>}
+						{vehicleError && (
+							<p className="dashboard-form-error" role="alert">
+								{vehicleError}
+							</p>
+						)}
 
 						<button className="btn-hero primary auth-submit" type="submit">
 							Save Car

@@ -6,6 +6,7 @@ import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
 import Header from "./components/Header";
 import Board from "./pages/Board";
+import RequireAuth from "./components/RequireAuth";
 import {
 	ApolloClient,
 	InMemoryCache,
@@ -17,7 +18,7 @@ import { setContext } from "@apollo/client/link/context";
 import Auth from "./utils/auth";
 
 const httpLink = createHttpLink({
-	uri: "/graphql",
+	uri: import.meta.env.VITE_GRAPHQL_URL || "/graphql",
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -52,8 +53,22 @@ function App() {
 						<Route path="/login" element={<Login />} />
 						<Route path="/logout" element={<Home />} />
 						<Route path="/signup" element={<Signup />} />
-						<Route path="/dashboard" element={<Dashboard />} />
-						<Route path="/vehicles/:vehicleId" element={<Board />} />
+						<Route
+							path="/dashboard"
+							element={
+								<RequireAuth>
+									<Dashboard />
+								</RequireAuth>
+							}
+						/>
+						<Route
+							path="/vehicles/:vehicleId"
+							element={
+								<RequireAuth>
+									<Board />
+								</RequireAuth>
+							}
+						/>
 						<Route
 							path="*"
 							element={Auth.loggedIn() ? <Navigate to="/dashboard" replace /> : <Home />}

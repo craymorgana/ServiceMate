@@ -1,9 +1,7 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-
-import { useMutation } from "@apollo/client";
-import { ADD_USER } from "../utils/mutations";
-
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useApolloClient, useMutation } from "@apollo/client";
+import { ADD_USER } from "@shared/graphql/operations";
 import Auth from "../utils/auth";
 
 const Signup = (props) => {
@@ -11,17 +9,20 @@ const Signup = (props) => {
 	const [password, setPass] = useState("");
 	const [name, setName] = useState("");
 	const [addUser, { error, data }] = useMutation(ADD_USER);
+	const navigate = useNavigate();
+	const client = useApolloClient();
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			const { data } = await addUser({
-				variables: { email, username: name, password: password },
+			const { data: result } = await addUser({
+				variables: { email, username: name, password },
 			});
-
-			Auth.login(data.addUser.token);
-		} catch (e) {
-			console.error(e);
+			Auth.login(result.addUser.token);
+			await client.resetStore();
+			navigate("/dashboard");
+		} catch (err) {
+			console.error(err);
 		}
 	};
 
@@ -60,6 +61,7 @@ const Signup = (props) => {
 								type="text"
 								placeholder="Username"
 								id="name"
+								required
 							/>
 							<label htmlFor="email">Email</label>
 							<input
@@ -68,14 +70,17 @@ const Signup = (props) => {
 								type="email"
 								placeholder="you@example.com"
 								id="email"
+								required
 							/>
 							<label htmlFor="password">Password</label>
 							<input
 								value={password}
 								onChange={(e) => setPass(e.target.value)}
 								type="password"
-								placeholder="••••••••"
+								placeholder="At least 8 characters"
 								id="password"
+								minLength={8}
+								required
 							/>
 							<button className="btn-hero primary auth-submit" type="submit">
 								Sign Up
@@ -87,7 +92,11 @@ const Signup = (props) => {
 						Already have an account? Log in
 					</Link>
 
-					{error && <p className="auth-error">{error.message}</p>}
+					{error && (
+						<p className="auth-error" role="alert">
+							{error.message}
+						</p>
+					)}
 				</div>
 			</section>
 		</div>

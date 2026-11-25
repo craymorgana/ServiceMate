@@ -1,23 +1,27 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { useMutation } from "@apollo/client";
-import { LOGIN_USER } from "../utils/mutations";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useApolloClient, useMutation } from "@apollo/client";
+import { LOGIN_USER } from "@shared/graphql/operations";
 import Auth from "../utils/auth";
 
 const Login = (props) => {
 	const [email, setEmail] = useState("");
 	const [password, setPass] = useState("");
 	const [login, { error, data }] = useMutation(LOGIN_USER);
+	const navigate = useNavigate();
+	const client = useApolloClient();
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			const { data } = await login({
+			const { data: result } = await login({
 				variables: { email, password },
 			});
-			Auth.login(data.login.token);
-		} catch (e) {
-			console.error(e);
+			Auth.login(result.login.token);
+			await client.resetStore();
+			navigate("/dashboard");
+		} catch (err) {
+			console.error(err);
 		}
 	};
 
@@ -55,6 +59,7 @@ const Login = (props) => {
 								type="email"
 								placeholder="you@example.com"
 								id="email"
+								required
 							/>
 							<label htmlFor="password">Password</label>
 							<input
@@ -63,6 +68,7 @@ const Login = (props) => {
 								type="password"
 								placeholder="••••••••"
 								id="password"
+								required
 							/>
 							<button className="btn-hero primary auth-submit" type="submit">
 								Log In
@@ -72,7 +78,11 @@ const Login = (props) => {
 					<Link className="auth-switch" to="/signup">
 						Don&apos;t have an account? Create one
 					</Link>
-					{error && <p className="auth-error">{error.message}</p>}
+					{error && (
+						<p className="auth-error" role="alert">
+							{error.message}
+						</p>
+					)}
 				</div>
 			</section>
 		</div>

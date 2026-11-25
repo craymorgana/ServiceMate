@@ -10,7 +10,7 @@ const Home = () => {
 					<h1 className="hero-title">ServiceMate</h1>
 					<p className="hero-subtitle">
 						A personal service history that follows your car. Log maintenance,
-						track mileage, and keep receipts organized in one place.
+						track mileage, and download the record when you need it.
 					</p>
 					<div className="hero-actions">
 						<Link className="btn-hero primary" to="/signup">
@@ -22,16 +22,16 @@ const Home = () => {
 					</div>
 					<div className="hero-stats">
 						<div className="stat">
-							<span className="stat-value">3 min</span>
-							<span className="stat-label">to log a service</span>
+							<span className="stat-value">Garage</span>
+							<span className="stat-label">one board per car</span>
 						</div>
 						<div className="stat">
-							<span className="stat-value">100%</span>
-							<span className="stat-label">user-owned data</span>
+							<span className="stat-value">Mileage</span>
+							<span className="stat-label">saved with each service</span>
 						</div>
 						<div className="stat">
-							<span className="stat-value">0</span>
-							<span className="stat-label">dealer lock-in</span>
+							<span className="stat-value">Download</span>
+							<span className="stat-label">your history as a file</span>
 						</div>
 					</div>
 				</div>
@@ -69,15 +69,15 @@ const Home = () => {
 					</p>
 				</div>
 				<div className="feature">
-					<h3>Maintenance timeline</h3>
+					<h3>Service board</h3>
 					<p>
-						See what was done, when it happened, and what is coming up next.
+						Move work from to-do, to in progress, to done as the job moves along.
 					</p>
 				</div>
 				<div className="feature">
-					<h3>Shareable history</h3>
+					<h3>Downloadable history</h3>
 					<p>
-						Export your records when you sell a car or hand it off to family.
+						Save the services and mileage for a car as a JSON file from its board.
 					</p>
 				</div>
 			</section>

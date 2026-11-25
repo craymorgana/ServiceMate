@@ -36,7 +36,7 @@ const seedServices = [
 		serviceType: "Oil change",
 		serviceDescription: "Synthetic 0W-20 and filter",
 		mileage: 45210,
-		columnId: "completed",
+		columnId: "DONE",
 	},
 	{
 		username: "aaron",
@@ -44,7 +44,7 @@ const seedServices = [
 		serviceType: "Tire rotation",
 		serviceDescription: "Rotated front to rear",
 		mileage: 45210,
-		columnId: "completed",
+		columnId: "DONE",
 	},
 	{
 		username: "aaron",
@@ -52,7 +52,7 @@ const seedServices = [
 		serviceType: "Brake pads",
 		serviceDescription: "Front pads replaced",
 		mileage: 31500,
-		columnId: "completed",
+		columnId: "DONE",
 	},
 	{
 		username: "taylor",
@@ -60,7 +60,7 @@ const seedServices = [
 		serviceType: "Battery",
 		serviceDescription: "Replaced with AGM battery",
 		mileage: 81200,
-		columnId: "completed",
+		columnId: "DONE",
 	},
 	{
 		username: "taylor",
@@ -68,12 +68,17 @@ const seedServices = [
 		serviceType: "Transmission service",
 		serviceDescription: "Fluid and filter",
 		mileage: 82000,
-		columnId: "planned",
+		columnId: "TODO",
 	},
 ];
 
 db.once("open", async () => {
 	try {
+		if (process.env.NODE_ENV === "production" && process.env.SEED_CONFIRM !== "yes") {
+			console.error("Refusing to seed while NODE_ENV=production. Set SEED_CONFIRM=yes to delete all app data and reseed.");
+			process.exit(1);
+		}
+
 		await User.deleteMany({});
 		await Service.deleteMany({});
 		await Vehicle.deleteMany({});

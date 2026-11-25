@@ -1,6 +1,12 @@
-const { gql } = require("apollo-server-express");
+const { gql } = require("graphql-tag");
 
 const typeDefs = gql`
+	enum ServiceColumn {
+		TODO
+		IN_PROGRESS
+		DONE
+	}
+
 	type User {
 		_id: ID
 		username: String
@@ -13,9 +19,9 @@ const typeDefs = gql`
 		vehicleTitle: String
 		userId: ID
 		mileage: Int
-		user: User
-		service: [Service]
-		title: String
+		services: [Service!]!
+		createdAt: String
+		updatedAt: String
 	}
 
 	type Service {
@@ -23,20 +29,37 @@ const typeDefs = gql`
 		serviceType: String!
 		serviceDescription: String!
 		mileage: Int!
-		columnId: String!
+		columnId: ServiceColumn!
 		vehicleId: ID!
+		createdAt: String
+		updatedAt: String
+	}
+
+	type PageInfo {
+		endCursor: ID
+		hasNextPage: Boolean!
+	}
+
+	type VehiclePage {
+		items: [Vehicle!]!
+		pageInfo: PageInfo!
+	}
+
+	type ServicePage {
+		items: [Service!]!
+		pageInfo: PageInfo!
 	}
 
 	type Auth {
-		token: ID!
+		token: String!
 		user: User
 	}
 
 	type Query {
 		user(username: String!): User
-		vehicles: [Vehicle!]!
+		vehicles(first: Int, after: ID): VehiclePage!
 		vehicle(vehicleId: ID!): Vehicle
-		service(vehicleId: ID!): [Service]
+		service(vehicleId: ID!, first: Int, after: ID): ServicePage!
 		me: User
 	}
 
@@ -49,8 +72,10 @@ const typeDefs = gql`
 			serviceType: String!
 			serviceDescription: String!
 			mileage: Int!
-			columnId: String!
+			columnId: ServiceColumn!
 		): Service
+		updateService(serviceId: ID!, columnId: ServiceColumn!): Service
+		removeService(serviceId: ID!): Service
 		addUser(username: String!, email: String!, password: String!): Auth
 		login(email: String!, password: String!): Auth
 	}
