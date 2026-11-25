@@ -10,6 +10,11 @@
 
 # production
 /build
+/client/dist
+dist/
+
+# Local receipt imports. Never commit real receipts.
+/server/seed-data/
 
 # misc
 .DS_Store

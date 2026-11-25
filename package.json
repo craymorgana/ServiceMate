@@ -1,21 +1,22 @@
 {
 	"name": "service-mate",
 	"version": "1.0.0",
-	"description": "",
+	"description": "ServiceMate vehicle maintenance tracker",
 	"main": "server/server.js",
 	"scripts": {
-		"start": "node server/server.js --ignore client",
-		"develop": "concurrently \"cd server && npm run watch\" \"cd client && npm run dev\"",
-		"install": "cd server && npm i && cd ../client && npm i",
-		"seed": "cd server && npm run seed",
-		"build": "cd client && npm run build"
+		"start": "npm run build && npm run start --prefix server",
+		"develop": "concurrently \"npm run watch --prefix server\" \"npm run dev --prefix client\"",
+		"bootstrap": "npm install --prefix server && npm install --prefix client",
+		"seed": "npm run seed --prefix server",
+		"seed:receipts": "npm run seed:receipts --prefix server --",
+		"build": "npm run build --prefix client",
+		"test": "npm test --prefix server && npm test --prefix client"
 	},
-	"author": "",
 	"license": "MIT",
-	"devDependencies": {
-		"concurrently": ""
+	"engines": {
+		"node": ">=20"
 	},
-	"dependencies": {
-		"express": "^5.2.1"
+	"devDependencies": {
+		"concurrently": "10.0.7"
 	}
 }

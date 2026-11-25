@@ -1,53 +1,123 @@
-/** @format */
-
-const express = require("express");
-const { ApolloServer } = require("apollo-server-express");
+const http = require("http");
 const path = require("path");
+const express = require("express");
+const cors = require("cors");
+const { ApolloServer } = require("@apollo/server");
+const { expressMiddleware } = require("@as-integrations/express4");
+const { ApolloServerPluginDrainHttpServer } = require("@apollo/server/plugin/drainHttpServer");
 const { authMiddleware } = require("./utils/auth");
-require("dotenv").config({ path: path.join(__dirname, "../.env") });
-
+const { assertRuntimeEnv } = require("./config/env");
 const { typeDefs, resolvers } = require("./schemas");
+
+assertRuntimeEnv();
+
 const db = require("./config/connection");
 
 const PORT = process.env.PORT || 3001;
+const isProduction = process.env.NODE_ENV === "production";
 const app = express();
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-  context: authMiddleware,
-});
+const httpServer = http.createServer(app);
 
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
-
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../client/build")));
+if (process.env.TRUST_PROXY === "1") {
+	app.set("trust proxy", 1);
 }
 
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/build/index.html"));
+function allowedOrigins() {
+	const configured = (process.env.CLIENT_ORIGIN || "")
+		.split(",")
+		.map((origin) => origin.trim())
+		.filter(Boolean);
+	if (!isProduction && configured.length === 0) {
+		configured.push("http://localhost:5173");
+	}
+	return configured;
+}
+
+function corsOrigin(origin, callback) {
+	if (!origin || allowedOrigins().includes(origin)) {
+		callback(null, true);
+		return;
+	}
+	callback(null, false);
+}
+
+app.use((req, res, next) => {
+	res.setHeader("X-Content-Type-Options", "nosniff");
+	res.setHeader("Referrer-Policy", "no-referrer");
+	res.setHeader("X-Frame-Options", "DENY");
+	next();
 });
 
-// Create a new instance of an Apollo server with the GraphQL schema
-const startApolloServer = async (typeDefs, resolvers) => {
-  await server.start();
-  server.applyMiddleware({ app });
+app.use(express.json());
 
-  // Start server without waiting for DB connection (useful when MongoDB is not available)
-  app.listen(PORT, () => {
-    console.log(`API server running on port ${PORT}!`);
-    console.log(
-      `Use GraphQL at http://localhost:${PORT}${server.graphqlPath}`
-    );
-    
-    // Log database connection status
-    if (db.readyState === 1) {
-      console.log('MongoDB connected successfully');
-    } else {
-      console.warn('⚠️  MongoDB not connected - database operations will fail');
-    }
-  });
-};
+app.get("/health", (_req, res) => {
+	if (db.readyState === 1) {
+		res.json({ status: "pass" });
+		return;
+	}
+	res.status(503).json({ status: "fail" });
+});
 
-// Call the async function to start the server
-startApolloServer(typeDefs, resolvers);
+const server = new ApolloServer({
+	typeDefs,
+	resolvers,
+	introspection: !isProduction,
+	includeStacktraceInErrorResponses: !isProduction,
+	plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+});
+
+function waitForDatabase() {
+	if (db.readyState === 1) return Promise.resolve();
+	return new Promise((resolve, reject) => {
+		const onOpen = () => {
+			cleanup();
+			resolve();
+		};
+		const onError = (err) => {
+			cleanup();
+			reject(err);
+		};
+		const cleanup = () => {
+			db.off("open", onOpen);
+			db.off("error", onError);
+		};
+		db.once("open", onOpen);
+		db.once("error", onError);
+	});
+}
+
+async function start() {
+	await server.start();
+	app.use(
+		"/graphql",
+		cors({ origin: corsOrigin }),
+		expressMiddleware(server, {
+			context: async ({ req }) => authMiddleware({ req }),
+		})
+	);
+
+	if (isProduction) {
+		const distPath = path.join(__dirname, "../client/dist");
+		app.use(express.static(distPath));
+		app.use((req, res, next) => {
+			if (req.path.startsWith("/graphql") || req.path === "/health") return next();
+			if (req.method !== "GET" && req.method !== "HEAD") return next();
+			res.sendFile(path.join(distPath, "index.html"), (err) => {
+				if (err) res.status(404).end();
+			});
+		});
+	}
+
+	await waitForDatabase();
+	await new Promise((resolve) => httpServer.listen(PORT, resolve));
+	console.log(`API server running on port ${PORT}`);
+	console.log(`GraphQL endpoint http://localhost:${PORT}/graphql`);
+	if (isProduction) {
+		console.log("Serving the built client from client/dist");
+	}
+}
+
+start().catch((err) => {
+	console.error("Server failed to start:", err.message);
+	process.exit(1);
+});
