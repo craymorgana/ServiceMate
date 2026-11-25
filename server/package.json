@@ -6,6 +6,7 @@
 	"scripts": {
 		"start": "node start.js",
 		"seed": "node seeds/seeds.js",
+		"seed:receipts": "node scripts/seedReceipts.js",
 		"watch": "nodemon server.js",
 		"test": "vitest run"
 	},

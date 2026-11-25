@@ -8,6 +8,7 @@
 		"develop": "concurrently \"npm run watch --prefix server\" \"npm run dev --prefix client\"",
 		"bootstrap": "npm install --prefix server && npm install --prefix client",
 		"seed": "npm run seed --prefix server",
+		"seed:receipts": "npm run seed:receipts --prefix server --",
 		"build": "npm run build --prefix client",
 		"test": "npm test --prefix server && npm test --prefix client"
 	},

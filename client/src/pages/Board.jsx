@@ -2,6 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import Modal from "react-modal";
 import AddService from "../components/AddService";
 import ServiceCard from "../components/ServiceCard";
+import ServiceHistory, { formatMoney, receiptCurrency } from "../components/ServiceHistory";
 import { useServiceBoard } from "../hooks/useServiceBoard";
 import { SERVICE_COLUMNS } from "@shared/graphql/columns";
 import sedanImage from "../assets/vehicles/sedan.svg";
@@ -78,9 +79,21 @@ const Board = () => {
 							alt={`${vehicleTitle} illustration`}
 						/>
 						<div className="vehicle-details-content">
-							<h3>{vehicleTitle}</h3>
+							<h3>{board.vehicle.nickname || vehicleTitle}</h3>
+							{(board.vehicle.year || board.vehicle.make || board.vehicle.model) && (
+								<p>
+									{[board.vehicle.year, board.vehicle.make, board.vehicle.model, board.vehicle.trim]
+										.filter(Boolean)
+										.join(" ")}
+								</p>
+							)}
 							<p>
 								Current mileage: <strong>{(board.vehicle.mileage || 0).toLocaleString()} mi</strong>
+							</p>
+							<p>
+								Spent: <strong>{formatMoney(board.vehicle.costTotal || 0, receiptCurrency(board.tasks))}</strong>
+								{board.vehicle.status === "sold" ? " · Sold" : ""}
+								{board.vehicle.plate ? ` · ${board.vehicle.plate}` : ""}
 							</p>
 							{!board.showMileageEditor ? (
 								<button
@@ -137,6 +150,7 @@ const Board = () => {
 						{board.moveError}
 					</p>
 				)}
+				<ServiceHistory services={board.tasks} costTotal={board.vehicle.costTotal} />
 				<div className="board-columns">
 					{SERVICE_COLUMNS.map((column) => (
 						<div className="hero-card board-column" key={column.id}>

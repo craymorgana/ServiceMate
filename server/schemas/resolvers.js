@@ -74,7 +74,14 @@ const resolvers = {
 	Vehicle: {
 		services: (vehicle) => {
 			if (Array.isArray(vehicle.services)) return vehicle.services;
-			return Service.find({ vehicleId: vehicle._id }).sort({ _id: 1 }).limit(MAX_PAGE).exec();
+			return Service.find({ vehicleId: vehicle._id })
+				.sort({ date: -1, _id: -1 })
+				.limit(500)
+				.exec();
+		},
+		costTotal: async (vehicle) => {
+			const rows = await Service.find({ vehicleId: vehicle._id }).select("total");
+			return rows.reduce((sum, row) => sum + (typeof row.total === "number" ? row.total : 0), 0);
 		},
 		createdAt: (vehicle) => iso(vehicle.createdAt),
 		updatedAt: (vehicle) => iso(vehicle.updatedAt),
@@ -85,6 +92,9 @@ const resolvers = {
 			if (!column) throw badInput("Service column is invalid");
 			return column;
 		},
+		description: (service) => service.description || service.serviceDescription || null,
+		items: (service) => service.items || [],
+		date: (service) => iso(service.date),
 		createdAt: (service) => iso(service.createdAt),
 		updatedAt: (service) => iso(service.updatedAt),
 	},

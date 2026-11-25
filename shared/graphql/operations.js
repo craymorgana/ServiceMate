@@ -117,13 +117,35 @@ export const QUERY_VEHICLE = gql`
 			vehicleTitle
 			userId
 			mileage
+			year
+			make
+			model
+			trim
+			vin
+			plate
+			nickname
+			status
+			costTotal
 			services {
 				_id
 				serviceType
 				serviceDescription
+				description
 				mileage
 				columnId
 				vehicleId
+				date
+				vendor
+				category
+				total
+				currency
+				orderNumber
+				items {
+					name
+					partNumber
+					qty
+					unitPrice
+				}
 				createdAt
 			}
 		}

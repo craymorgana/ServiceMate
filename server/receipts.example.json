@@ -1,0 +1,50 @@
+{
+	"vehicles": [
+		{
+			"id": "example-car",
+			"year": 2004,
+			"make": "Example",
+			"model": "Demo",
+			"trim": "LX",
+			"vin": "EXAMPLEVIN0000001",
+			"nickname": "Sample car",
+			"source": "example"
+		}
+	],
+	"records": [
+		{
+			"vehicleId": "example-car",
+			"date": "2024-03-01",
+			"vendor": "Sample Auto",
+			"category": "service",
+			"description": "Example oil change",
+			"items": [
+				{ "name": "Oil filter", "partNumber": "OF-1", "qty": 1, "unitPrice": 9.5 }
+			],
+			"total": 49.99,
+			"currency": "USD",
+			"mileage": 10000,
+			"orderNumber": "SAMPLE-1001",
+			"emailSubject": "Example receipt",
+			"emailReceivedAt": "2024-03-02T12:00:00.000Z",
+			"emailId": "example-email-1"
+		},
+		{
+			"vehicleId": "example-car",
+			"date": "2024-06-15",
+			"vendor": "Sample Parts",
+			"category": "parts",
+			"description": "Example wiper blades",
+			"items": [
+				{ "name": "Wiper blade", "partNumber": "WB-2", "qty": 2, "unitPrice": 12 }
+			],
+			"total": 24,
+			"currency": "USD",
+			"mileage": 12000,
+			"orderNumber": "SAMPLE-1002",
+			"emailSubject": "Example parts receipt",
+			"emailReceivedAt": "2024-06-16T15:00:00.000Z",
+			"emailId": "example-email-2"
+		}
+	]
+}

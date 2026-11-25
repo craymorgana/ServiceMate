@@ -46,8 +46,22 @@ ServiceMate is a vehicle maintenance tracker. Each account has a garage of cars,
 | `npm run build` | Production client bundle in `client/dist` |
 | `npm start` | Builds the client, then serves the API and `client/dist` with production settings |
 | `npm run seed` | Deletes all app data and inserts sample users, cars, and services |
+| `npm run seed:receipts -- --file <path> --user <email or username>` | Upserts that user's vehicles and service receipts from a local JSON file |
 
 `npm run seed` refuses to run when `NODE_ENV=production` unless `SEED_CONFIRM=yes`. It deletes every user, vehicle, and service in the database named by `MONGODB_URI`.
+
+### Import receipts
+
+Real receipts stay on your machine. `server/seed-data/` is gitignored. Copy the fake sample, replace it with your own file, and do not commit that file:
+
+```bash
+mkdir -p server/seed-data
+cp server/receipts.example.json server/seed-data/receipts.json
+npm run seed:receipts -- --file server/seed-data/receipts.json --user you@example.com --dry-run
+npm run seed:receipts -- --file server/seed-data/receipts.json --user you@example.com
+```
+
+The user must already exist. Vehicles match an existing VIN, otherwise year + make + model. Each record becomes a service. Running the command again does not duplicate a row that has the same `emailId`, or the same `orderNumber` and date. Records whose `vehicleId` is null are listed and skipped. Add `--include-unassigned` to put those on one vehicle titled Unassigned.
 
 ## Production
 

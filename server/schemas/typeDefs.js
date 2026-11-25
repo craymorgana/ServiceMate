@@ -7,6 +7,28 @@ const typeDefs = gql`
 		DONE
 	}
 
+	enum VehicleStatus {
+		active
+		sold
+	}
+
+	enum ServiceCategory {
+		parts
+		service
+		tires
+		fluids
+		insurance
+		registration
+		other
+	}
+
+	type ServiceItem {
+		name: String
+		partNumber: String
+		qty: Float
+		unitPrice: Float
+	}
+
 	type User {
 		_id: ID
 		username: String
@@ -19,6 +41,16 @@ const typeDefs = gql`
 		vehicleTitle: String
 		userId: ID
 		mileage: Int
+		year: Int
+		make: String
+		model: String
+		trim: String
+		vin: String
+		plate: String
+		nickname: String
+		status: VehicleStatus
+		source: String
+		costTotal: Float
 		services: [Service!]!
 		createdAt: String
 		updatedAt: String
@@ -28,9 +60,19 @@ const typeDefs = gql`
 		_id: ID!
 		serviceType: String!
 		serviceDescription: String!
-		mileage: Int!
+		description: String
+		mileage: Int
 		columnId: ServiceColumn!
 		vehicleId: ID!
+		date: String
+		vendor: String
+		category: ServiceCategory
+		items: [ServiceItem!]!
+		total: Float
+		currency: String
+		orderNumber: String
+		source: String
+		emailId: String
 		createdAt: String
 		updatedAt: String
 	}
